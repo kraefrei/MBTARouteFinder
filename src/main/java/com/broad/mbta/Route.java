@@ -29,7 +29,13 @@ public class Route {
   }
 
   public boolean containsStop(String id) {
-    return _stops.keySet().stream().anyMatch(id::equals);
+    return _stops.keySet().contains(id);
+  }
+
+  public boolean containsStopName(String name) {
+    return _stops.values().stream()
+      .map(Stop::getName)
+      .anyMatch(name::equals);
   }
 
   public int getStopCount() {
@@ -37,10 +43,21 @@ public class Route {
   }
 
   public Map<String, Collection<Route>> findConnectingStops() {
-    return _stops.values()
-      .stream()
+    return _stops.values().stream()
       .filter(Stop::hasConnection)
       .collect(Collectors.toMap(Stop::getName, s -> s.getConnectingRoutes()));
+  }
+
+  public Map<String, Collection<Route>> findConnectingStopsExcluding(Collection<Route> routes) {
+    return _stops.values().stream()
+      .filter(Stop::hasConnection)
+      .collect(Collectors.toMap(Stop::getName, s -> s.getConnectingRoutesExcluding(routes)));
+  }
+
+  public Map<String, Collection<Route>> findConnectingStopsExcluding(Route route) {
+    return _stops.values().stream()
+      .filter(Stop::hasConnection)
+      .collect(Collectors.toMap(Stop::getName, s -> s.getConnectingRoutesExcluding(route)));
   }
 
   @Override
