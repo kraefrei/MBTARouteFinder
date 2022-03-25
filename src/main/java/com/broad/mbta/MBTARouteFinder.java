@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
+ * MBTA Route Finder
+ * This program hits the MBTA API <a href="https://api-v3.mbta.com/docs/swagger/index.html"</a>
+ * and finds information about the set of light and heavy rail routes.
+ * See the README for information on the arguments
  */
 public class MBTARouteFinder {
     public static void main( String[] args ) throws IOException, InterruptedException, URISyntaxException {
@@ -14,14 +17,14 @@ public class MBTARouteFinder {
             try {
                 int firstArg = Integer.parseInt(args[0]);
 
-                TransitMap map = TransitMap.buildNewTransitMap();
-                if (firstArg == 1) {
+                TransitMap map = new TransitMapBuilder().buildNewTransitMap();
+                if (firstArg == 1) { // Question 1: List all the light and heavy rail routes
                     map.printRoutes();
-                } else if (firstArg == 2) {
+                } else if (firstArg == 2) { // Question 2: print the largest and smallest number of stops and the route they belong to
                     map.printLargestRoute();
                     map.printSmallestRoute();
                     map.printConnectingStops();
-                } else if (firstArg == 3) {
+                } else if (firstArg == 3) { // Question 3: Route finding
                     String start = args[1];
                     String end = args[2];
                     List<Route> finalRoute = map.findPathBetweenStops(start, end);
